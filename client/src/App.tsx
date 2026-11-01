@@ -1,4 +1,6 @@
+import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import { LoadingBlock } from './components/ui/Spinner'
 import { RequireAuth } from './components/layout/guards'
 import { StoreLayout } from './components/layout/StoreLayout'
 import { AccountAddressesPage } from './pages/store/AccountAddressesPage'
@@ -16,9 +18,12 @@ import { ProductDetailPage } from './pages/store/ProductDetailPage'
 import { ProductsPage } from './pages/store/ProductsPage'
 import { RegisterPage } from './pages/store/RegisterPage'
 
+const AdminRoutes = lazy(() => import('./pages/admin/AdminRoutes'))
+
 export default function App() {
   return (
     <Routes>
+      {/* Storefront */}
       <Route element={<StoreLayout />}>
         <Route index element={<HomePage />} />
         <Route path="products" element={<ProductsPage />} />
@@ -41,6 +46,16 @@ export default function App() {
 
         <Route path="*" element={<NotFoundPage />} />
       </Route>
+
+      {/* Admin (role ADMIN only; code-split) */}
+      <Route
+        path="admin/*"
+        element={
+          <Suspense fallback={<LoadingBlock label="Loading admin" className="min-h-screen" />}>
+            <AdminRoutes />
+          </Suspense>
+        }
+      />
     </Routes>
   )
 }
