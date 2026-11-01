@@ -8,12 +8,15 @@ import { AuthModule } from './auth/auth.module';
 import { BannersModule } from './banners/banners.module';
 import { CartsModule } from './carts/carts.module';
 import { CategoriesModule } from './categories/categories.module';
+import { CheckoutModule } from './checkout/checkout.module';
 import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 import { CouponsModule } from './coupons/coupons.module';
+import { OrdersModule } from './orders/orders.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ProductsModule } from './products/products.module';
+import { ReturnsModule } from './returns/returns.module';
 import { SettingsModule } from './settings/settings.module';
 import { UsersModule } from './users/users.module';
 import { WishlistsModule } from './wishlists/wishlists.module';
@@ -43,6 +46,9 @@ import { WishlistsModule } from './wishlists/wishlists.module';
     BannersModule,
     CartsModule,
     WishlistsModule,
+    CheckoutModule,
+    OrdersModule,
+    ReturnsModule,
     SettingsModule,
     PaymentsModule,
   ],
