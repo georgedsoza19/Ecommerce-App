@@ -1,0 +1,39 @@
+# Free demo hosting on Render:
+# 1. Create a free MongoDB Atlas cluster and copy the connection string.
+# 2. In Render: New → Blueprint → connect this repo → apply.
+# 3. Set env vars on the web service (see README → Deploy).
+# 4. After first deploy, open the Render Shell and run: npm run seed:deploy
+#
+# Free web services sleep after ~15 minutes of idle time; the first request
+# after sleep can take 30–60 seconds.
+
+services:
+  - type: web
+    name: geo-ecommerce
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm run build:deploy
+    startCommand: npm run start:deploy
+    healthCheckPath: /api/settings
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: UPLOAD_DIR
+        value: uploads
+      - key: CLIENT_DIST
+        value: public
+      - key: JWT_ACCESS_EXPIRES
+        value: 15m
+      - key: JWT_REFRESH_EXPIRES
+        value: 7d
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      # Optional: set to https://<your-service>.onrender.com after first deploy.
+      # If unset, CORS uses RENDER_EXTERNAL_URL automatically.
+      - key: CLIENT_ORIGIN
+        sync: false
