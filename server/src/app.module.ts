@@ -6,14 +6,17 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AddressesModule } from './addresses/addresses.module';
 import { AuthModule } from './auth/auth.module';
 import { BannersModule } from './banners/banners.module';
+import { CartsModule } from './carts/carts.module';
 import { CategoriesModule } from './categories/categories.module';
 import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
+import { CouponsModule } from './coupons/coupons.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ProductsModule } from './products/products.module';
 import { SettingsModule } from './settings/settings.module';
 import { UsersModule } from './users/users.module';
+import { WishlistsModule } from './wishlists/wishlists.module';
 
 @Module({
   imports: [
@@ -36,7 +39,10 @@ import { UsersModule } from './users/users.module';
     AddressesModule,
     CategoriesModule,
     ProductsModule,
+    CouponsModule,
     BannersModule,
+    CartsModule,
+    WishlistsModule,
     SettingsModule,
     PaymentsModule,
   ],
