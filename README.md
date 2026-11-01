@@ -141,16 +141,31 @@ URL-encode special characters in the password (e.g. `@` → `%40`).
 
 4. Click **Deploy** and wait for the build to finish (first build can take several minutes).
 
-### Step 3 — Seed demo data
+### Step 3 — Seed demo data (no Shell needed)
 
-1. In Render → your service → **Shell**.
-2. Run:
+Render **free** plans do not include Shell. Use any of these:
+
+**A. Auto-seed on boot (recommended)**  
+Set env `SEED_ON_BOOT=true` and redeploy. If the database has **no users**, demo data loads automatically on startup.
+
+**B. HTTP seed from your laptop**  
+Set env `SEED_SECRET` to a long random string, redeploy, then:
 
 ```bash
-npm run seed:deploy
+curl -X POST "https://YOUR-APP.onrender.com/api/seed" \
+  -H "x-seed-secret: YOUR_SEED_SECRET"
 ```
 
-3. Open the service URL (e.g. `https://geo-ecommerce.onrender.com`).
+**C. Seed Atlas from your machine**
+
+```bash
+cd server
+MONGODB_URI="mongodb+srv://USER:PASS@cluster0.xxxxx.mongodb.net/geo?retryWrites=true&w=majority" \
+JWT_SECRET="local-seed-secret-16+" \
+npm run seed
+```
+
+Then open the service URL (e.g. `https://geo-ecommerce.onrender.com`).
 
 Demo logins (after seed):
 

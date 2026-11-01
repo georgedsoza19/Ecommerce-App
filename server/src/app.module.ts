@@ -18,6 +18,7 @@ import { OrdersModule } from './orders/orders.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ProductsModule } from './products/products.module';
 import { ReturnsModule } from './returns/returns.module';
+import { SeedModule } from './seed/seed.module';
 import { SettingsModule } from './settings/settings.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { UsersModule } from './users/users.module';
@@ -60,6 +61,7 @@ import { WishlistsModule } from './wishlists/wishlists.module';
     AdminModule,
     PaymentsModule,
     UploadsModule,
+    SeedModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
