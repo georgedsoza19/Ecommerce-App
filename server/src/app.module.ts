@@ -4,6 +4,7 @@ import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AddressesModule } from './addresses/addresses.module';
+import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
 import { BannersModule } from './banners/banners.module';
 import { CartsModule } from './carts/carts.module';
@@ -18,19 +19,25 @@ import { PaymentsModule } from './payments/payments.module';
 import { ProductsModule } from './products/products.module';
 import { ReturnsModule } from './returns/returns.module';
 import { SettingsModule } from './settings/settings.module';
+import { UploadsModule } from './uploads/uploads.module';
 import { UsersModule } from './users/users.module';
 import { WishlistsModule } from './wishlists/wishlists.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: ['.env'] }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env'],
+    }),
     ThrottlerModule.forRoot([{ ttl: 60_000, limit: 120 }]),
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
         const uri = config.get<string>('MONGODB_URI');
         const secret = config.get<string>('JWT_SECRET');
-        if (!uri) throw new Error('MONGODB_URI is required');
+        if (!uri) {
+          throw new Error('MONGODB_URI is required');
+        }
         if (!secret || secret.length < 16) {
           throw new Error('JWT_SECRET must be set (min 16 characters)');
         }
@@ -50,7 +57,9 @@ import { WishlistsModule } from './wishlists/wishlists.module';
     OrdersModule,
     ReturnsModule,
     SettingsModule,
+    AdminModule,
     PaymentsModule,
+    UploadsModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
