@@ -1,0 +1,114 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Outfit', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --color-paper: #f5f3ec;
+  --color-paper-deep: #ebe8de;
+  --color-surface: #fdfcf9;
+  --color-ink: #1a1f1b;
+  --color-ink-soft: #444c46;
+  --color-ink-faint: #5f665f;
+  --color-line: #d8d4c7;
+
+  --color-brand-50: #e9f0ea;
+  --color-brand-100: #d2e2d7;
+  --color-brand-200: #a9c7b3;
+  --color-brand-600: #2a6247;
+  --color-brand-700: #1f4d38;
+  --color-brand-800: #173c2b;
+  --color-brand-900: #102b1f;
+
+  --color-danger: #a8322a;
+  --color-danger-bg: #fbeae7;
+  --color-warning: #85560a;
+  --color-warning-bg: #faf0d6;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-brand-100);
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 1024px) {
+    .container-page {
+      padding-inline: 2rem;
+    }
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 100;
+    background: var(--color-brand-800);
+    color: #fff;
+    padding: 0.6rem 1rem;
+    border-radius: 0.375rem;
+    transition: top 0.15s;
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  dialog.modal::backdrop {
+    background: rgb(16 43 31 / 0.45);
+  }
+}
