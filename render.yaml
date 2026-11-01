@@ -19,8 +19,9 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 10000
+      # Keep install of build tools (Nest CLI, Vite) during npm ci
+      - key: NPM_CONFIG_PRODUCTION
+        value: "false"
       - key: UPLOAD_DIR
         value: uploads
       - key: CLIENT_DIST
@@ -33,7 +34,7 @@ services:
         sync: false
       - key: JWT_SECRET
         generateValue: true
-      # Optional: set to https://<your-service>.onrender.com after first deploy.
+      # Optional: https://<your-service>.onrender.com after first deploy.
       # If unset, CORS uses RENDER_EXTERNAL_URL automatically.
       - key: CLIENT_ORIGIN
         sync: false
