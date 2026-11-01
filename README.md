@@ -97,6 +97,48 @@ cd client && npm run dev
 
 The Vite dev server proxies `/api` and `/uploads` to the NestJS server so auth cookies stay first-party.
 
+## Deploy (free demo)
+
+Recommended free stack for sharing a live demo:
+
+| Piece | Free service |
+|-------|----------------|
+| Database | [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) M0 |
+| App (API + storefront) | [Render](https://render.com) free Web Service |
+
+The production build serves the React app from NestJS on **one URL**, so login cookies work without cross-site setup.
+
+### 1. MongoDB Atlas
+1. Create a free M0 cluster.
+2. Database Access → create a user.
+3. Network Access → allow `0.0.0.0/0` (demo only) or Render’s IPs.
+4. Connect → Drivers → copy the URI, e.g.  
+   `mongodb+srv://USER:PASS@cluster0.xxxxx.mongodb.net/geo?retryWrites=true&w=majority`
+
+### 2. Render
+1. Push this branch to GitHub.
+2. Render → **New** → **Blueprint** → select the repo (uses [`render.yaml`](render.yaml)), **or** New Web Service manually:
+   - **Build:** `npm run build:deploy`
+   - **Start:** `npm run start:deploy`
+3. Set environment variables:
+   - `MONGODB_URI` — Atlas URI from step 1
+   - `CLIENT_ORIGIN` — your Render URL, e.g. `https://geo-ecommerce.onrender.com`  
+     (or omit it; the app falls back to `RENDER_EXTERNAL_URL`)
+   - `JWT_SECRET` — long random string (Blueprint can auto-generate)
+   - `NODE_ENV=production`
+4. Deploy, then open **Shell** on the service and seed demo data:
+
+```bash
+npm run seed:deploy
+```
+
+5. Open the Render URL. Demo logins are in the table above.
+
+**Notes**
+- Free Render services **sleep when idle**; the first visit after sleep can take 30–60 seconds.
+- Disk is ephemeral — admin image uploads may disappear after redeploys; seeded Unsplash images are fine for demos.
+- Payments stay on the simulated gateway (no Stripe keys required).
+
 ## Key database models
 
 | Collection      | Purpose |
