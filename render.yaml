@@ -2,7 +2,9 @@
 # 1. Create a free MongoDB Atlas cluster and copy the connection string.
 # 2. In Render: New → Blueprint → connect this repo → apply.
 # 3. Set env vars on the web service (see README → Deploy).
-# 4. After first deploy, open the Render Shell and run: npm run seed:deploy
+# 4. Free plan has no Shell — set SEED_ON_BOOT=true (below) or POST /api/seed
+#    with header x-seed-secret: <SEED_SECRET>. You can also seed from your laptop
+#    against Atlas: MONGODB_URI=... npm run seed --prefix server
 #
 # Free web services sleep after ~15 minutes of idle time; the first request
 # after sleep can take 30–60 seconds.
@@ -33,6 +35,12 @@ services:
       - key: MONGODB_URI
         sync: false
       - key: JWT_SECRET
+        generateValue: true
+      # Seeds demo data once when the DB has no users (no Shell required).
+      - key: SEED_ON_BOOT
+        value: "true"
+      # Optional one-shot seed via: curl -X POST .../api/seed -H "x-seed-secret: ..."
+      - key: SEED_SECRET
         generateValue: true
       # Optional: https://<your-service>.onrender.com after first deploy.
       # If unset, CORS uses RENDER_EXTERNAL_URL automatically.

@@ -1,17 +1,33 @@
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { getModelToken } from '@nestjs/mongoose';
 import cookieParser from 'cookie-parser';
 import { existsSync } from 'fs';
 import helmet from 'helmet';
+import { Model } from 'mongoose';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
+import { runSeed } from './seed/run-seed';
+import { User, UserDocument } from './users/schemas/user.schema';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const config = app.get(ConfigService);
   const isProd = config.get('NODE_ENV') === 'production';
+
+  // Free Render has no Shell — seed empty databases on boot when enabled.
+  if (config.get('SEED_ON_BOOT') === 'true') {
+    const userModel = app.get<Model<UserDocument>>(getModelToken(User.name));
+    const count = await userModel.countDocuments();
+    if (count === 0) {
+      console.log('SEED_ON_BOOT: empty database — loading demo data…');
+      await runSeed(app, { wipe: true });
+    } else {
+      console.log(`SEED_ON_BOOT: skipped (${count} users already present)`);
+    }
+  }
 
   app.setGlobalPrefix('api');
   app.use(
